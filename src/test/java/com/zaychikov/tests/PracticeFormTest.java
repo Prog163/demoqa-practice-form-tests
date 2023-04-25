@@ -21,6 +21,14 @@ public class PracticeFormTest {
         //Тесты падают из-за долгой загрузки страницы, пришлось выставить увеличенный Таймаут
         Configuration.pageLoadTimeout = 600000;
     }
+    
+    @AfterAll
+    static void afterAll() {
+        //Оставляю браузер открытым для проверки введённых значений, т.к. он закрывается автоматически
+        Configuration.holdBrowserOpen = true;
+//        Пришлось добавить, в фоновом режиме Chrome продолжал работать, CPU на 100% загружается
+//        Selenide.closeWebDriver();
+    }
 
     @Test
     void practiceFormTest() {
@@ -56,13 +64,5 @@ public class PracticeFormTest {
                 text("Sports"),
                 text("Russia, Samara city"),
                 text("Haryana Panipat"));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        //Оставляю браузер открытым для проверки введённых значений, т.к. он закрывается автоматически
-        Configuration.holdBrowserOpen = true;
-//        Пришлось добавить, в фоновом режиме Chrome продолжал работать, CPU на 100% загружается
-//        Selenide.closeWebDriver();
     }
 }
