@@ -1,8 +1,5 @@
 package com.zaychikov.tests;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
@@ -11,20 +8,11 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class PracticeFormTest {
-
-    private String PracticeFormUrl = "https://demoqa.com/automation-practice-form";
-
-    @BeforeAll
-    static void beforeAll() {
-        Configuration.browserSize = "1920x1080";
-        //Тесты падают из-за долгой загрузки страницы, пришлось выставить увеличенный Таймаут
-        Configuration.pageLoadTimeout = 600000;
-    }
+public class PracticeFormTest extends TestBase {
 
     @Test
     void practiceFormTest() {
-        open(PracticeFormUrl);
+        open("/automation-practice-form");
         $("#firstName").setValue("Aleksandr");
         $("#lastName").setValue("Zaychikov");
         $("#userEmail").setValue("Email@useremail.com");
@@ -56,13 +44,5 @@ public class PracticeFormTest {
                 text("Sports"),
                 text("Russia, Samara city"),
                 text("Haryana Panipat"));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        //Оставляю браузер открытым для проверки введённых значений, т.к. он закрывается автоматически
-        Configuration.holdBrowserOpen = true;
-//        Пришлось добавить, в фоновом режиме Chrome продолжал работать, CPU на 100% загружается
-//        Selenide.closeWebDriver();
     }
 }
