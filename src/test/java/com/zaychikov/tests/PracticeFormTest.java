@@ -1,5 +1,6 @@
 package com.zaychikov.tests;
 
+import com.zaychikov.pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
@@ -10,9 +11,12 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class PracticeFormTest extends TestBase {
 
+    RegistrationPage registrationPage = new RegistrationPage();
+
     @Test
     void practiceFormTest() {
-        open("/automation-practice-form");
+        registrationPage.openPage();
+
         $("#firstName").setValue("Aleksandr");
         $("#lastName").setValue("Zaychikov");
         $("#userEmail").setValue("Email@useremail.com");
