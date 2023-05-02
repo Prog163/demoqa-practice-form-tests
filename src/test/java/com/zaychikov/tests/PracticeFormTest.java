@@ -7,7 +7,8 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.zaychikov.tests.TestData.firstName;
+import static com.zaychikov.tests.TestData.lastName;
 
 public class PracticeFormTest extends TestBase {
 
@@ -17,8 +18,8 @@ public class PracticeFormTest extends TestBase {
     void practiceFormTest() {
         registrationPage.openPage();
 
-        $("#firstName").setValue("Aleksandr");
-        $("#lastName").setValue("Zaychikov");
+        registrationPage.typeFirstName(firstName);
+        registrationPage.typeLastName(lastName);
         $("#userEmail").setValue("Email@useremail.com");
         $("#userNumber").setValue("8999222335");
         $(by("class", "custom-control-label")).click();
@@ -39,7 +40,7 @@ public class PracticeFormTest extends TestBase {
 
         //Проверяем совпадения
         $(".table-responsive").shouldHave(
-                text("Aleksandr Zaychikov"),
+                text(firstName + " " + lastName),
                 text("Email@useremail.com"),
                 text("Male"),
                 text("8999222335"),
