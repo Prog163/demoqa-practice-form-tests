@@ -10,7 +10,7 @@ public class TestBase {
     static void beforeAll() {
         Configuration.browserSize = "1920x1080";
         //Тесты падают из-за долгой загрузки страницы, пришлось выставить увеличенный Таймаут
-        Configuration.pageLoadTimeout = 600000;
+        Configuration.pageLoadStrategy = "eager";
         Configuration.baseUrl = "https://demoqa.com";
     }
 
