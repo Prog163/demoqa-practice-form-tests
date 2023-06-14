@@ -1,68 +1,48 @@
 package com.zaychikov.tests;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import com.zaychikov.pages.Calendar;
+import com.zaychikov.pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.by;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.zaychikov.tests.TestData.*;
 
-public class PracticeFormTest {
+public class PracticeFormTest extends TestBase {
 
-    private String PracticeFormUrl = "https://demoqa.com/automation-practice-form";
-
-    @BeforeAll
-    static void beforeAll() {
-        Configuration.browserSize = "1920x1080";
-        //Тесты падают из-за долгой загрузки страницы, пришлось выставить увеличенный Таймаут
-        Configuration.pageLoadTimeout = 600000;
-    }
-    
-    @AfterAll
-    static void afterAll() {
-        //Оставляю браузер открытым для проверки введённых значений, т.к. он закрывается автоматически
-        Configuration.holdBrowserOpen = true;
-//        Пришлось добавить, в фоновом режиме Chrome продолжал работать, CPU на 100% загружается
-//        Selenide.closeWebDriver();
-    }
+    RegistrationPage registrationPage = new RegistrationPage();
+    RegistrationPage closeModalWindowButton = new RegistrationPage();
+    Calendar calendar = new Calendar();
 
     @Test
     void practiceFormTest() {
-        open(PracticeFormUrl);
-        $("#firstName").setValue("Aleksandr");
-        $("#lastName").setValue("Zaychikov");
-        $("#userEmail").setValue("Email@useremail.com");
-        $("#userNumber").setValue("8999222335");
-        $(by("class", "custom-control-label")).click();
-        $("#dateOfBirthInput").click();
-        $(by("class", "react-datepicker__month-select")).click();
-        $(by("value", "9")).click();
-        $(by("class", "react-datepicker__year-select")).click();
-        $(by("value", "1991")).click();
-        $(by("aria-label", "Choose Monday, October 7th, 1991")).click();
-        $("#subjectsInput").setValue("Computer Science").pressEnter();
-        $(by("class", "custom-control custom-checkbox custom-control-inline")).click();
-        $("#currentAddress").setValue("Russia, Samara city");
-        $(byText("State and City")).scrollTo();
-        $(by("class", " css-tlfecz-indicatorContainer")).click();
-        $("#react-select-3-input").setValue("Haryana").pressEnter();
-        $(by("class", " css-2b097c-container")).click();
-        $("#react-select-4-input").setValue("Panipat").pressEnter().pressEnter();
+        registrationPage.openPage();
 
-        //Проверяем совпадения
+        registrationPage.typeFirstName(firstName);
+        registrationPage.typeLastName(lastName);
+        registrationPage.typeUserEmail(userEmail);
+        registrationPage.typeMobileNumber(userNumber);
+        registrationPage.typeGender(userGender);
+        calendar.selectDateOfBirth();
+        registrationPage.typeSubjects(userSubjects);
+        registrationPage.typeHobbies(userHobbies);
+        registrationPage.typeUserCity(userCity);
+        registrationPage.typeState(userState);
+        registrationPage.typeCityOfState(userCityOfState);
+
+        //Проверяем правильность заполнения
         $(".table-responsive").shouldHave(
-                text("Aleksandr Zaychikov"),
-                text("Email@useremail.com"),
-                text("Male"),
-                text("8999222335"),
+                text(firstName + " " + lastName),
+                text(userEmail),
+                text(userGender),
+                text(userNumber),
                 text("07 October,1991"),
-                text("Computer Science"),
-                text("Sports"),
-                text("Russia, Samara city"),
-                text("Haryana Panipat"));
+                text(userSubjects),
+                text(userHobbies),
+                text(userCity),
+                text(userState + " " + userCityOfState));
+
+        //Закрываем модальное окно с результатами заполнения после сверки
+        closeModalWindowButton.closeModalWindow();
     }
 }
